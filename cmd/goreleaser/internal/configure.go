@@ -33,8 +33,8 @@ const (
 	contribDistro    = "otelcol-contrib"
 	k8sDistro        = "otelcol-k8s"
 	otlpDistro       = "otelcol-otlp"
-	dockerHub        = "otel"
-	ghcr             = "ghcr.io/open-telemetry/opentelemetry-collector-releases"
+	dockerHub        = "douglascamata"
+	ghcr             = "ghcr.io/douglascamata/opentelemetry-collector-releases"
 	binaryNamePrefix = "otelcol"
 	imageNamePrefix  = "opentelemetry-collector"
 )
