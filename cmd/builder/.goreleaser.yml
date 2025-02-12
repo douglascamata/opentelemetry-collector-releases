@@ -78,12 +78,12 @@ dockers:
       - --label=org.opencontainers.image.licenses=Apache-2.0
     use: buildx
 docker_manifests:
-  - name_template: otel/opentelemetry-collector-builder:{{ .Version }}
+  - name_template: douglascamata/opentelemetry-collector-builder:{{ .Version }}
     image_templates:
       - douglascamata/opentelemetry-collector-builder:{{ .Version }}-amd64
       - douglascamata/opentelemetry-collector-builder:{{ .Version }}-arm64
       - douglascamata/opentelemetry-collector-builder:{{ .Version }}-ppc64le
-  - name_template: otel/opentelemetry-collector-builder:latest
+  - name_template: douglascamata/opentelemetry-collector-builder:latest
     image_templates:
       - douglascamata/opentelemetry-collector-builder:latest-amd64
       - douglascamata/opentelemetry-collector-builder:latest-arm64
