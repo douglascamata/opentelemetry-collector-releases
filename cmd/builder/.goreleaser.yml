@@ -88,12 +88,12 @@ docker_manifests:
       - douglascamata/opentelemetry-collector-builder:latest-amd64
       - douglascamata/opentelemetry-collector-builder:latest-arm64
       - douglascamata/opentelemetry-collector-builder:latest-ppc64le
-  - name_template: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-builder:{{ .Version }}
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:{{ .Version }}
     image_templates:
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:{{ .Version }}-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:{{ .Version }}-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:{{ .Version }}-ppc64le
-  - name_template: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-builder:latest
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:latest
     image_templates:
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:latest-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-builder:latest-arm64
