@@ -217,6 +217,48 @@ dockers:
       - --label=org.opencontainers.image.source={{.GitURL}}
       - --label=org.opencontainers.image.licenses=Apache-2.0
     use: buildx
+  - goos: windows
+    goarch: amd64
+    dockerfile: Windows.dockerfile
+    image_templates:
+      - douglascamata/opentelemetry-collector:{{ .Version }}-windows-2019-amd64
+      - douglascamata/opentelemetry-collector:latest-windows-2019-amd64
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2019-amd64
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2019-amd64
+    extra_files:
+      - config.yaml
+    build_flag_templates:
+      - --pull
+      - --build-arg=WIN_VERSION=2019
+      - --platform=windows/amd64
+      - --label=org.opencontainers.image.created={{.Date}}
+      - --label=org.opencontainers.image.name={{.ProjectName}}
+      - --label=org.opencontainers.image.revision={{.FullCommit}}
+      - --label=org.opencontainers.image.version={{.Version}}
+      - --label=org.opencontainers.image.source={{.GitURL}}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+    use: buildx
+  - goos: windows
+    goarch: amd64
+    dockerfile: Windows.dockerfile
+    image_templates:
+      - douglascamata/opentelemetry-collector:{{ .Version }}-windows-2022-amd64
+      - douglascamata/opentelemetry-collector:latest-windows-2022-amd64
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2022-amd64
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2022-amd64
+    extra_files:
+      - config.yaml
+    build_flag_templates:
+      - --pull
+      - --build-arg=WIN_VERSION=2022
+      - --platform=windows/amd64
+      - --label=org.opencontainers.image.created={{.Date}}
+      - --label=org.opencontainers.image.name={{.ProjectName}}
+      - --label=org.opencontainers.image.revision={{.FullCommit}}
+      - --label=org.opencontainers.image.version={{.Version}}
+      - --label=org.opencontainers.image.source={{.GitURL}}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+    use: buildx
 docker_manifests:
   - name_template: douglascamata/opentelemetry-collector:{{ .Version }}
     image_templates:
@@ -250,6 +292,30 @@ docker_manifests:
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-s390x
+  - name_template: douglascamata/opentelemetry-collector:{{ .Version }}-windows-2019
+    image_templates:
+      - douglascamata/opentelemetry-collector:{{ .Version }}-windows-2019-amd64
+  - name_template: douglascamata/opentelemetry-collector:latest-windows-2019
+    image_templates:
+      - douglascamata/opentelemetry-collector:latest-windows-2019-amd64
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2019
+    image_templates:
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2019-amd64
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2019
+    image_templates:
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2019-amd64
+  - name_template: douglascamata/opentelemetry-collector:{{ .Version }}-windows-2022
+    image_templates:
+      - douglascamata/opentelemetry-collector:{{ .Version }}-windows-2022-amd64
+  - name_template: douglascamata/opentelemetry-collector:latest-windows-2022
+    image_templates:
+      - douglascamata/opentelemetry-collector:latest-windows-2022-amd64
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2022
+    image_templates:
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:{{ .Version }}-windows-2022-amd64
+  - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2022
+    image_templates:
+      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector:latest-windows-2022-amd64
 signs:
   - cmd: cosign
     args:
