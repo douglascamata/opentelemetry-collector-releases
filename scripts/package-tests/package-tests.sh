@@ -5,8 +5,8 @@
 
 set -euov pipefail
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REPO_DIR="$( cd "$SCRIPT_DIR/../../../../" && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/../../../../" && pwd)"
 export REPO_DIR
 PKG_PATH="${1:-}"
 DISTRO="${2:-}"
@@ -18,21 +18,20 @@ PROCESS_NAME=$DISTRO
 source "$SCRIPT_DIR"/common.sh
 
 if [[ -z "$PKG_PATH" ]]; then
-    echo "usage: ${BASH_SOURCE[0]} DEB_OR_RPM_PATH" >&2
-    exit 1
+	echo "usage: ${BASH_SOURCE[0]} DEB_OR_RPM_PATH" >&2
+	exit 1
 fi
 
 if [[ ! -f "$PKG_PATH" ]]; then
-    echo "$PKG_PATH not found!" >&2
-    exit 1
+	echo "$PKG_PATH not found!" >&2
+	exit 1
 fi
 
-
-pkg_base="$( basename "$PKG_PATH" )"
+pkg_base="$(basename "$PKG_PATH")"
 pkg_type="${pkg_base##*.}"
 if [[ ! "$pkg_type" =~ ^(deb|rpm)$ ]]; then
-    echo "$PKG_PATH not supported!" >&2
-    exit 1
+	echo "$PKG_PATH not supported!" >&2
+	exit 1
 fi
 image_name="otelcontribcol-$pkg_type-test"
 container_name="$image_name"
@@ -52,7 +51,7 @@ install_pkg "$container_name" "$PKG_PATH"
 
 # If we got to this point, we might need to check the logs of the systemd service
 # when it's not properly active. This is added as a trap because the check
-# for service status below will return an error exitcode if the service is 
+# for service status below will return an error exitcode if the service is
 # not active, triggering the end of this script because of the shell option `-e`
 trap '$container_exec journalctl -u "$SERVICE_NAME" || true' EXIT
 
@@ -63,9 +62,9 @@ $container_exec systemctl --no-pager status "$SERVICE_NAME"
 
 echo "Checking $PROCESS_NAME process ..."
 if [ "$DISTRO" = "otelcol" ]; then
-  $container_exec pgrep -a -u otel "$PROCESS_NAME"
+	$container_exec pgrep -a -u otel "$PROCESS_NAME"
 else
-  $container_exec pgrep -a -u otelcol-contrib "$PROCESS_NAME"
+	$container_exec pgrep -a -u otelcol-contrib "$PROCESS_NAME"
 fi
 
 # test uninstall
@@ -74,21 +73,21 @@ uninstall_pkg "$container_name" "$pkg_type" "$DISTRO"
 
 echo "Checking $SERVICE_NAME service status after uninstall ..."
 if $container_exec systemctl --no-pager status "$SERVICE_NAME"; then
-    echo "$SERVICE_NAME service still running after uninstall" >&2
-    exit 1
+	echo "$SERVICE_NAME service still running after uninstall" >&2
+	exit 1
 fi
 echo "$SERVICE_NAME service successfully stopped after uninstall"
 
 echo "Checking $SERVICE_NAME service existence after uninstall ..."
 if $container_exec systemctl list-unit-files --all | grep "$SERVICE_NAME"; then
-    echo "$SERVICE_NAME service still exists after uninstall" >&2
-    exit 1
+	echo "$SERVICE_NAME service still exists after uninstall" >&2
+	exit 1
 fi
 echo "$SERVICE_NAME service successfully removed after uninstall"
 
 echo "Checking $PROCESS_NAME process after uninstall ..."
 if $container_exec pgrep "$PROCESS_NAME"; then
-    echo "$PROCESS_NAME process still running after uninstall"
-    exit 1
+	echo "$PROCESS_NAME process still running after uninstall"
+	exit 1
 fi
 echo "$PROCESS_NAME process successfully killed after uninstall"
