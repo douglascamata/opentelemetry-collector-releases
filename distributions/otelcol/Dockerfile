@@ -1,4 +1,4 @@
-FROM alpine:3.21 as certs
+FROM public.ecr.aws/docker/library/alpine:3.21 as certs
 RUN apk --update add ca-certificates
 
 FROM scratch

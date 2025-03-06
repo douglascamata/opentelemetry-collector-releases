@@ -1,11 +1,11 @@
-FROM golang:1.24-alpine3.20
+FROM public.ecr.aws/docker/library/golang:1.24-alpine3.20
 RUN apk --update add ca-certificates
 
 ARG SERVICE_NAME=ocb
 
 RUN addgroup --gid 10001 --system ${SERVICE_NAME} && \
-    adduser --ingroup ${SERVICE_NAME} --shell /bin/false \
-    --disabled-password --uid 10001 ${SERVICE_NAME}
+  adduser --ingroup ${SERVICE_NAME} --shell /bin/false \
+  --disabled-password --uid 10001 ${SERVICE_NAME}
 
 USER ${SERVICE_NAME}
 WORKDIR /home/${SERVICE_NAME}
