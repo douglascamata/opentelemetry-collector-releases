@@ -22,6 +22,7 @@ package internal
 import (
 	"fmt"
 	"path"
+	"slices"
 	"strings"
 
 	"github.com/goreleaser/goreleaser-pro/v2/pkg/config"
@@ -40,10 +41,11 @@ const (
 )
 
 var (
-	baseArchs   = []string{"386", "amd64", "arm", "arm64", "ppc64le", "s390x"}
-	winArchs    = []string{"386", "amd64", "arm64"}
-	darwinArchs = []string{"amd64", "arm64"}
-	k8sArchs    = []string{"amd64", "arm64", "ppc64le", "s390x"}
+	baseArchs         = []string{"386", "amd64", "arm", "arm64", "ppc64le", "s390x"}
+	winArchs          = []string{"386", "amd64", "arm64"}
+	winContainerArchs = []string{"amd64"}
+	darwinArchs       = []string{"amd64", "arm64"}
+	k8sArchs          = []string{"amd64", "arm64", "ppc64le", "s390x"}
 
 	imageRepos = []string{dockerHub, ghcr}
 
@@ -54,8 +56,16 @@ var (
 			&fullBuildConfig{targetOS: "darwin", targetArch: darwinArchs},
 			&fullBuildConfig{targetOS: "windows", targetArch: winArchs},
 		}
-		d.containerImages = newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"})
-		d.containerImageManifests = newContainerImageManifests(d.name, "linux", baseArchs)
+		d.containerImages = slices.Concat(
+			newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
+		d.containerImageManifests = slices.Concat(
+			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
 	// otlp distro
@@ -65,8 +75,16 @@ var (
 			&fullBuildConfig{targetOS: "darwin", targetArch: darwinArchs},
 			&fullBuildConfig{targetOS: "windows", targetArch: winArchs},
 		}
-		d.containerImages = newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"})
-		d.containerImageManifests = newContainerImageManifests(d.name, "linux", baseArchs)
+		d.containerImages = slices.Concat(
+			newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
+		d.containerImageManifests = slices.Concat(
+			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
 	}).WithPackagingDefaults().Build()
 
 	// contrib distro
@@ -94,8 +112,16 @@ var (
 				},
 			},
 		}
-		d.containerImages = newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"})
-		d.containerImageManifests = newContainerImageManifests(d.name, "linux", baseArchs)
+		d.containerImages = slices.Concat(
+			newContainerImages(d.name, "linux", baseArchs, containerImageOptions{armVersion: "7"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImages(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
+		d.containerImageManifests = slices.Concat(
+			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
 	// contrib build-only project
@@ -112,8 +138,16 @@ var (
 		d.buildConfigs = []buildConfig{
 			&fullBuildConfig{targetOS: "linux", targetArch: k8sArchs, ppc64Version: []string{"power8"}},
 		}
-		d.containerImages = newContainerImages(d.name, "linux", k8sArchs, containerImageOptions{})
-		d.containerImageManifests = newContainerImageManifests(d.name, "linux", k8sArchs)
+		d.containerImages = slices.Concat(
+			newContainerImages(d.name, "linux", k8sArchs, containerImageOptions{armVersion: "7"}),
+			newContainerImages(d.name, "windows", k8sArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImages(d.name, "windows", k8sArchs, containerImageOptions{winVersion: "2022"}),
+		)
+		d.containerImageManifests = slices.Concat(
+			newContainerImageManifests(d.name, "linux", k8sArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
+		)
 	}).WithDefaultArchives().WithDefaultChecksum().WithDefaultSigns().WithDefaultDockerSigns().WithDefaultSBOMs().Build()
 )
 
@@ -392,8 +426,14 @@ func (d *distribution) BuildProject() config.Project {
 	}
 }
 
-func newContainerImageManifests(dist, os string, archs []string) []config.DockerManifest {
+func newContainerImageManifests(dist, os string, archs []string, opts containerImageOptions) []config.DockerManifest {
 	tags := []string{`{{ .Version }}`, "latest"}
+	if os == "windows" {
+		for i, tag := range tags {
+			tags[i] = fmt.Sprintf("%s-%s-%s", tag, os, opts.winVersion)
+		}
+	}
+
 	var r []config.DockerManifest
 	for _, imageRepo := range imageRepos {
 		for _, tag := range tags {
@@ -509,6 +549,12 @@ func dockerImageWithOS(dist, os, arch string, opts containerImageOptions) config
 	if arch == armArch {
 		imageConfig.Goarm = opts.armVersion
 	}
+	if os == "windows" {
+		imageConfig.BuildFlagTemplates = slices.Insert(
+			imageConfig.BuildFlagTemplates, 1, fmt.Sprintf("--build-arg=WIN_VERSION=%s", opts.winVersion),
+		)
+		imageConfig.Dockerfile = "Windows.dockerfile"
+	}
 	return imageConfig
 }
 
@@ -523,6 +569,8 @@ func (o *osArch) buildPlatform() string {
 		case armArch:
 			return fmt.Sprintf("linux/arm/v%s", o.version)
 		}
+	case "windows":
+		return fmt.Sprintf("windows/%s", o.arch)
 	}
 	return fmt.Sprintf("linux/%s", o.arch)
 }
@@ -534,6 +582,8 @@ func (o *osArch) imageTag() string {
 		case armArch:
 			return fmt.Sprintf("armv%s", o.version)
 		}
+	case "windows":
+		return fmt.Sprintf("windows-%s-%s", o.version, o.arch)
 	}
 	return o.arch
 }
@@ -592,14 +642,4 @@ func armVersions(dist string) []string {
 // imageName translates a distribution name to a container image name.
 func imageName(dist string) string {
 	return strings.Replace(dist, binaryNamePrefix, imageNamePrefix, 1)
-}
-
-// archName translates architecture to docker platform names.
-func archName(arch, armVersion string) string {
-	switch arch {
-	case armArch:
-		return fmt.Sprintf("%s/v%s", arch, armVersion)
-	default:
-		return arch
-	}
 }
