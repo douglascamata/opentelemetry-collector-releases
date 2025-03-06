@@ -63,8 +63,6 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
@@ -82,8 +80,6 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().Build()
 
@@ -119,8 +115,6 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
@@ -145,8 +139,6 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", k8sArchs, containerImageOptions{}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
-			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithDefaultArchives().WithDefaultChecksum().WithDefaultSigns().WithDefaultDockerSigns().WithDefaultSBOMs().Build()
 )
