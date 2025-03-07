@@ -547,6 +547,8 @@ func dockerImageWithOS(dist, os, arch string, opts containerImageOptions) config
 		)
 		imageConfig.Dockerfile = "Windows.dockerfile"
 		imageConfig.Use = "docker"
+		imageConfig.SkipBuild = fmt.Sprintf("{{ not (eq .Env.WIN_VERSION %q) }}", opts.winVersion)
+		imageConfig.SkipPush = fmt.Sprintf("{{ not (eq .Env.WIN_VERSION %q) }}", opts.winVersion)
 	}
 	return imageConfig
 }

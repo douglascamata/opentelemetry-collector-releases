@@ -28,9 +28,11 @@ jobs:
           - os: windows-2019
             GOOS: windows
             GOARCH: "386"
+            WIN_VERSION: "2019"
           - os: windows-2019
             GOOS: windows
             GOARCH: amd64
+            WIN_VERSION: "2019"
         exclude:
           - GOOS: darwin
             GOARCH: "386"
@@ -99,6 +101,7 @@ jobs:
           workdir: distributions/${{ inputs.distribution }}
           args: release --clean --split --timeout 2h --config .goreleaser-build.yaml --release-header-tmpl=../../.github/release-template.md
         env:
+          WIN_VERSION: ${{ matrix.WIN_VERSION }}
           GOOS: ${{ matrix.GOOS }}
           GOARCH: ${{ matrix.GOARCH }}
           GOARM: "7" # Default is 6
@@ -127,6 +130,7 @@ jobs:
           workdir: distributions/${{ inputs.distribution }}
           args: release --clean --split --timeout 2h --release-header-tmpl=../../.github/release-template.md
         env:
+          WIN_VERSION: ${{ matrix.WIN_VERSION }}
           GOOS: ${{ matrix.GOOS }}
           GOARCH: ${{ matrix.GOARCH }}
           GOARM: 7 # Default is 6

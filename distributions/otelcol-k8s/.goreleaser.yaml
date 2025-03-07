@@ -110,6 +110,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-amd64
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2019") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2019") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2019
@@ -129,6 +131,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-arm64
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2019") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2019") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2019
@@ -148,6 +152,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-ppc64le
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2019") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2019") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2019
@@ -167,6 +173,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-s390x
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2019") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2019") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2019
@@ -186,6 +194,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-amd64
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2022") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2022") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2022
@@ -205,6 +215,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-arm64
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2022") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2022") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2022
@@ -224,6 +236,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-ppc64le
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2022") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2022") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2022
@@ -243,6 +257,8 @@ dockers:
       - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-s390x
+    skip_build: '{{ not (eq .Env.WIN_VERSION "2022") }}'
+    skip_push: '{{ not (eq .Env.WIN_VERSION "2022") }}'
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2022
