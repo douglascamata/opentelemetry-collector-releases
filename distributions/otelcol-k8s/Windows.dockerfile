@@ -2,9 +2,7 @@
 ARG WIN_VERSION=2019
 FROM mcr.microsoft.com/windows/nanoserver:ltsc${WIN_VERSION}
 
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
-
-COPY --chmod=755 otelcol-k8s.exe ./otelcol-k8s.exe
+COPY otelcol-k8s.exe ./otelcol-k8s.exe
 
 ENV NO_WINDOWS_SERVICE=1
 
