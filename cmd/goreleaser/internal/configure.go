@@ -546,6 +546,7 @@ func dockerImageWithOS(dist, os, arch string, opts containerImageOptions) config
 			imageConfig.BuildFlagTemplates, 1, fmt.Sprintf("--build-arg=WIN_VERSION=%s", opts.winVersion),
 		)
 		imageConfig.Dockerfile = "Windows.dockerfile"
+		imageConfig.Use = "docker"
 	}
 	return imageConfig
 }

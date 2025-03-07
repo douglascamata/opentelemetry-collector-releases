@@ -219,7 +219,7 @@ dockers:
       - --label=org.opencontainers.image.version={{.Version}}
       - --label=org.opencontainers.image.source={{.GitURL}}
       - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: buildx
+    use: docker
   - goos: windows
     goarch: amd64
     dockerfile: Windows.dockerfile
@@ -238,7 +238,7 @@ dockers:
       - --label=org.opencontainers.image.version={{.Version}}
       - --label=org.opencontainers.image.source={{.GitURL}}
       - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: buildx
+    use: docker
 docker_manifests:
   - name_template: douglascamata/opentelemetry-collector-otlp:{{ .Version }}
     image_templates:
