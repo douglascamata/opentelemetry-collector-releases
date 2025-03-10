@@ -146,7 +146,10 @@ jobs:
 
   release:
     name: ${{ inputs.distribution }} Release
-    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2019]
+    runs-on: ${{ matrix.os }}
     needs: prepare
 
     permissions:
@@ -164,10 +167,12 @@ jobs:
       - uses: anchore/sbom-action/download-syft@f325610c9f50a54015d37c8d16cb3b0e2c8f4de0 # v0.18.0
 
       - uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+        if: runner.os != 'Windows'
         with:
           platforms: arm64,ppc64le,s390x
 
       - uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3.10.0
+        if: runner.os != 'Windows'
 
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
@@ -175,13 +180,33 @@ jobs:
           check-latest: true
 
       - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        if: runner.os == 'Windows'
         with:
-          pattern: artifacts-${{ inputs.distribution }}-*
+          pattern: artifacts-${{ inputs.distribution }}-windows-*
+          path: distributions/${{ inputs.distribution }}/dist
+          merge-multiple: true
+
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        if: runner.os != 'Windows'
+        with:
+          pattern: artifacts-${{ inputs.distribution }}-darwin-*
+          path: distributions/${{ inputs.distribution }}/dist
+          merge-multiple: true
+
+      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        if: runner.os != 'Windows'
+        with:
+          pattern: artifacts-${{ inputs.distribution }}-linux-*
           path: distributions/${{ inputs.distribution }}/dist
           merge-multiple: true
 
       - name: Display structure of downloaded files
+        if: runner.os != 'Windows'
         run: ls -R distributions/${{ inputs.distribution }}/dist
+
+      - name: Display structure of downloaded files (Windows)
+        if: runner.os == 'Windows'
+        run: ls -Path distributions/otelcol-contrib/artifacts -Force -Recurse | Format-List
 
       - name: Log into Docker.io
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
