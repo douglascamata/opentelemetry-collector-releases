@@ -546,12 +546,14 @@ func dockerImageWithOS(dist, os, arch string, opts containerImageOptions) config
 	}
 	if os == "windows" {
 		imageConfig.BuildFlagTemplates = slices.Insert(
-			imageConfig.BuildFlagTemplates, 1, fmt.Sprintf("--build-arg=WIN_VERSION=%s", opts.winVersion),
+			imageConfig.BuildFlagTemplates, 1,
+			fmt.Sprintf("--build-arg=WIN_VERSION=%s", opts.winVersion),
+			"--isolation hyperv",
 		)
 		imageConfig.Dockerfile = "Windows.dockerfile"
 		imageConfig.Use = "docker"
-		imageConfig.SkipBuild = fmt.Sprintf("{{ not (eq .Env.WIN_VERSION %q) }}", opts.winVersion)
-		imageConfig.SkipPush = fmt.Sprintf("{{ not (eq .Env.WIN_VERSION %q) }}", opts.winVersion)
+		imageConfig.SkipBuild = "{{ not (eq .Runtime.Goos \"windows\") }}"
+		imageConfig.SkipPush = "{{ not (eq .Runtime.Goos \"windows\") }}"
 	}
 	return imageConfig
 }
