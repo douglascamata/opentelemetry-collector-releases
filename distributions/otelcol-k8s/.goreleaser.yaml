@@ -29,8 +29,6 @@ builds:
       - windows
     goarch:
       - amd64
-    goppc64:
-      - power8
     dir: _build
     binary: otelcol-k8s
     ldflags:
