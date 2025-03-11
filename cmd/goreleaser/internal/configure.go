@@ -43,7 +43,7 @@ const (
 var (
 	baseArchs         = []string{"386", "amd64", "arm", "arm64", "ppc64le", "s390x"}
 	winArchs          = []string{"386", "amd64", "arm64"}
-	winContainerArchs = []string{"amd64"}
+	winContainerArchs = []string{"amd64", "arm64"}
 	darwinArchs       = []string{"amd64", "arm64"}
 	k8sArchs          = []string{"amd64", "arm64", "ppc64le", "s390x"}
 
@@ -63,6 +63,8 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
@@ -80,6 +82,8 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().Build()
 
@@ -115,6 +119,8 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", baseArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithPackagingDefaults().WithDefaultConfigIncluded().Build()
 
@@ -140,6 +146,8 @@ var (
 		)
 		d.containerImageManifests = slices.Concat(
 			newContainerImageManifests(d.name, "linux", k8sArchs, containerImageOptions{}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2019"}),
+			newContainerImageManifests(d.name, "windows", winContainerArchs, containerImageOptions{winVersion: "2022"}),
 		)
 	}).WithDefaultArchives().WithDefaultChecksum().WithDefaultSigns().WithDefaultDockerSigns().WithDefaultSBOMs().Build()
 )
