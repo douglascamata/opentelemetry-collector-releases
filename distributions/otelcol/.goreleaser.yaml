@@ -5,6 +5,8 @@ env:
   - LD_FLAGS=-s -w
   - CGO_ENABLED=0
   - BUILD_FLAGS=-trimpath
+release:
+  replace_existing_artifacts: true
 msi:
   - id: otelcol
     name: otelcol_{{ .Version }}_{{ .Os }}_{{ .MsiArch }}

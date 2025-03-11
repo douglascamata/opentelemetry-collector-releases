@@ -394,7 +394,10 @@ func (d *distribution) BuildProject() config.Project {
 
 	return config.Project{
 		ProjectName: "opentelemetry-collector-releases",
-		Checksum:    d.checksum,
+		Release: config.Release{
+			ReplaceExistingArtifacts: true,
+		},
+		Checksum: d.checksum,
 		Env: []string{
 			"COSIGN_YES=true",
 			"LD_FLAGS=-s -w",
