@@ -50,8 +50,6 @@ dockers:
     goarch: amd64
     dockerfile: Dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-amd64
-      - douglascamata/opentelemetry-collector-k8s:latest-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-amd64
     build_flag_templates:
@@ -68,8 +66,6 @@ dockers:
     goarch: arm64
     dockerfile: Dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-arm64
-      - douglascamata/opentelemetry-collector-k8s:latest-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-arm64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-arm64
     build_flag_templates:
@@ -86,8 +82,6 @@ dockers:
     goarch: ppc64le
     dockerfile: Dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-ppc64le
-      - douglascamata/opentelemetry-collector-k8s:latest-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-ppc64le
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-ppc64le
     build_flag_templates:
@@ -104,8 +98,6 @@ dockers:
     goarch: s390x
     dockerfile: Dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-s390x
-      - douglascamata/opentelemetry-collector-k8s:latest-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-s390x
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-s390x
     build_flag_templates:
@@ -122,8 +114,6 @@ dockers:
     goarch: amd64
     dockerfile: Windows.dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-amd64
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-amd64
     skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
@@ -143,8 +133,6 @@ dockers:
     goarch: amd64
     dockerfile: Windows.dockerfile
     image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-amd64
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-amd64
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-amd64
     skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
@@ -161,18 +149,6 @@ dockers:
       - --label=org.opencontainers.image.licenses=Apache-2.0
     use: docker
 docker_manifests:
-  - name_template: douglascamata/opentelemetry-collector-k8s:{{ .Version }}
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-amd64
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-arm64
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-ppc64le
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-s390x
-  - name_template: douglascamata/opentelemetry-collector-k8s:latest
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:latest-amd64
-      - douglascamata/opentelemetry-collector-k8s:latest-arm64
-      - douglascamata/opentelemetry-collector-k8s:latest-ppc64le
-      - douglascamata/opentelemetry-collector-k8s:latest-s390x
   - name_template: ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}
     image_templates:
       - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-amd64
