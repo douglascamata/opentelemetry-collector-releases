@@ -214,7 +214,7 @@ jobs:
 
       - name: Display structure of downloaded files (Windows)
         if: runner.os == 'Windows'
-        run: ls -Path distributions/otelcol-contrib/artifacts -Force -Recurse | Format-List
+        run: ls -Path distributions/${{ inputs.distribution }}/dist -Force -Recurse | Format-List
 
       - name: Log into Docker.io
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
