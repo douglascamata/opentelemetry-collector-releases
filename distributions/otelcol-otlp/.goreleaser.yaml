@@ -216,7 +216,6 @@ dockers:
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2019
-      - --isolation hyperv
       - --platform=windows/amd64
       - --label=org.opencontainers.image.created={{.Date}}
       - --label=org.opencontainers.image.name={{.ProjectName}}
@@ -238,7 +237,6 @@ dockers:
     build_flag_templates:
       - --pull
       - --build-arg=WIN_VERSION=2022
-      - --isolation hyperv
       - --platform=windows/amd64
       - --label=org.opencontainers.image.created={{.Date}}
       - --label=org.opencontainers.image.name={{.ProjectName}}

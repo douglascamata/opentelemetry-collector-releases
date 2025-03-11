@@ -548,7 +548,6 @@ func dockerImageWithOS(dist, os, arch string, opts containerImageOptions) config
 		imageConfig.BuildFlagTemplates = slices.Insert(
 			imageConfig.BuildFlagTemplates, 1,
 			fmt.Sprintf("--build-arg=WIN_VERSION=%s", opts.winVersion),
-			"--isolation hyperv",
 		)
 		imageConfig.Dockerfile = "Windows.dockerfile"
 		imageConfig.Use = "docker"
