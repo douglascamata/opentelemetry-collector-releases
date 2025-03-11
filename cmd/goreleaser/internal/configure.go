@@ -634,10 +634,14 @@ func osDockerManifest(prefix, version, dist, os string, archs []string) config.D
 		}
 	}
 
-	return config.DockerManifest{
+	manifest := config.DockerManifest{
 		NameTemplate:   fmt.Sprintf("%s/%s:%s", prefix, imageName(dist), version),
 		ImageTemplates: imageTemplates,
 	}
+	if os == "windows" {
+		manifest.SkipPush = "{{ not (eq .Runtime.Goos \"windows\") }}"
+	}
+	return manifest
 }
 
 func armVersions(dist string) []string {
