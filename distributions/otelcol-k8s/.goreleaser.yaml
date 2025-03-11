@@ -24,10 +24,24 @@ builds:
       - '{{ .Env.LD_FLAGS }}'
     flags:
       - '{{ .Env.BUILD_FLAGS }}'
+  - id: otelcol-k8s-windows
+    goos:
+      - windows
+    goarch:
+      - amd64
+    goppc64:
+      - power8
+    dir: _build
+    binary: otelcol-k8s
+    ldflags:
+      - '{{ .Env.LD_FLAGS }}'
+    flags:
+      - '{{ .Env.BUILD_FLAGS }}'
 archives:
   - id: otelcol-k8s
     builds:
       - otelcol-k8s-linux
+      - otelcol-k8s-windows
     name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
 checksum:
   name_template: '{{ .ProjectName }}_otelcol-k8s_checksums.txt'
@@ -126,69 +140,6 @@ dockers:
       - --label=org.opencontainers.image.licenses=Apache-2.0
     use: docker
   - goos: windows
-    goarch: arm64
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-arm64
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-arm64
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-arm64
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-arm64
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2019
-      - --platform=windows/arm64
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
-    goarch: ppc64le
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-ppc64le
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-ppc64le
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-ppc64le
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-ppc64le
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2019
-      - --platform=windows/ppc64le
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
-    goarch: s390x
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-s390x
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2019-s390x
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2019-s390x
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2019-s390x
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2019
-      - --platform=windows/s390x
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
     goarch: amd64
     dockerfile: Windows.dockerfile
     image_templates:
@@ -202,69 +153,6 @@ dockers:
       - --pull
       - --build-arg=WIN_VERSION=2022
       - --platform=windows/amd64
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
-    goarch: arm64
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-arm64
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-arm64
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-arm64
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-arm64
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2022
-      - --platform=windows/arm64
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
-    goarch: ppc64le
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-ppc64le
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-ppc64le
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-ppc64le
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-ppc64le
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2022
-      - --platform=windows/ppc64le
-      - --label=org.opencontainers.image.created={{.Date}}
-      - --label=org.opencontainers.image.name={{.ProjectName}}
-      - --label=org.opencontainers.image.revision={{.FullCommit}}
-      - --label=org.opencontainers.image.version={{.Version}}
-      - --label=org.opencontainers.image.source={{.GitURL}}
-      - --label=org.opencontainers.image.licenses=Apache-2.0
-    use: docker
-  - goos: windows
-    goarch: s390x
-    dockerfile: Windows.dockerfile
-    image_templates:
-      - douglascamata/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-s390x
-      - douglascamata/opentelemetry-collector-k8s:latest-windows-2022-s390x
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:{{ .Version }}-windows-2022-s390x
-      - ghcr.io/douglascamata/opentelemetry-collector-releases/opentelemetry-collector-k8s:latest-windows-2022-s390x
-    skip_build: '{{ not (eq .Runtime.Goos "windows") }}'
-    skip_push: '{{ not (eq .Runtime.Goos "windows") }}'
-    build_flag_templates:
-      - --pull
-      - --build-arg=WIN_VERSION=2022
-      - --platform=windows/s390x
       - --label=org.opencontainers.image.created={{.Date}}
       - --label=org.opencontainers.image.name={{.ProjectName}}
       - --label=org.opencontainers.image.revision={{.FullCommit}}
