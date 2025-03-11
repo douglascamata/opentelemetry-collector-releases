@@ -44,7 +44,6 @@ builds:
     goarch:
       - "386"
       - amd64
-      - arm64
     dir: _build
     binary: otelcol-contrib
     ldflags:
